@@ -28,8 +28,9 @@ class infoStruct():
             self.IndexCombs.append(CombList)
             CombList = []
     
-    ##Convert Index lists of sub-sequences into Value lists
+   
     def produceValCombs(self):
+        ##Convert Index lists of sub-sequences into Value lists
         self.ValCombs = copy.deepcopy(self.IndexCombs)  #Copy of indexes to be edited
         for index,val in enumerate(self.Seq):           #For each value in the original sequence
             for startIndex,j in enumerate(self.IndexCombs): #Look over each start index ...
@@ -37,7 +38,18 @@ class infoStruct():
                     for EleCount,CombEle in enumerate(k):   #... and finally the values in each sub-sequence
                         if CombEle == index:             #Replace when values match
                             self.ValCombs[startIndex][CombCount][EleCount] = val
-        
+    
+    def findMaxSeq(self):
+        ##Read through Value lists and 
+        maxVal = 0
+        for startIndex,valCombList in enumerate(self.ValCombs):#For each start index
+            for endIndex,valComb in enumerate(valCombList):    #For each end index
+                valCombSum = sum(valComb)                      #Find the sum of the combination
+                if valCombSum>maxVal:                          #If the sum is greater than stored max...
+                    maxVal = valCombSum                        #...replace sum and...
+                    indexRange = [startIndex,endIndex]         #...store index range
+                    
+        print("Start index = {}; End index = {}; Sum = {}".format(indexRange[0],indexRange[1],maxVal))
 
 def MaxSeqSum(Seq = []):
     
@@ -45,8 +57,6 @@ def MaxSeqSum(Seq = []):
 
     SeqCont.produceValCombs()
     
-    startIndex = []
-    endIndex = []
-    combSum = []    
-    print("Start index = {}; End index = {}; Sum = {}".format(startIndex,endIndex,combSum))
+    SeqCont.findMaxSeq()
+    
     return SeqCont
